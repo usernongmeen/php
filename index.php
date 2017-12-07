@@ -19,3 +19,22 @@ try {
 } catch(\LINE\LINEBot\Exception\InvalidEventRequestException $e) {
   error_log('parseEventRequest failed. InvalidEventRequestException => '.var_export($e, true));
 }
+foreach ($events as $event) {
+  // Postback Event
+  if (($event instanceof \LINE\LINEBot\Event\PostbackEvent)) {
+    $logger->info('Postback message has come');
+    continue;
+  }
+  // Location Event
+  if  ($event instanceof LINE\LINEBot\Event\MessageEvent\LocationMessage) {
+    $logger->info("location -> ".$event->getLatitude().",".$event->getLongitude());
+    continue;
+  }
+  
+  // Message Event = TextMessage
+  if (($event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage)) {
+    // get message text
+    $messageText=strtolower(trim($event->getText()));
+    
+  }
+}  
