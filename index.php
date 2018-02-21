@@ -16,11 +16,10 @@ if (!is_null($events['events'])) {
 			$text = $event['message']['id'];
 			// Make a POST Request to Messaging API to reply to sender
 			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
-			$data = [
-				'displayName' => $profile,
-				'messageId' => $text,
+			$post = [
+			    'displayName' => $profile,
+			    'messageId' => $text,
 			];
-			$post = json_encode($data);
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
