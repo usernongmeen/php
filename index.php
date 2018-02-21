@@ -15,7 +15,7 @@ if (!is_null($events['events'])) {
 			// Get text sent
 			$text = $event['message']['id'];
 			// Make a POST Request to Messaging API to reply to sender
-			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/test.php';
+			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
 			$data = [
 				'displayName' => $profile,
 				'messageId' => $text,
