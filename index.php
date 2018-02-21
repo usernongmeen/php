@@ -23,19 +23,16 @@ if (!is_null($events['events'])) {
 				imageId: ' . $text
 			];
 			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/test.php';
+			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/test.php';
 			$data = [
 				'replyToken' => $replyToken,
 				'messages' => [$messages],
 			];
 			$post = json_encode($data);
-			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			$result = curl_exec($ch);
 			curl_close($ch);
 		}
