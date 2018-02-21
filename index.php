@@ -14,24 +14,15 @@ if (!is_null($events['events'])) {
 			$profile = $event['source']['userId'];
 			// Get text sent
 			$text = $event['message']['id'];
-			// Get replyToken
-			$replyToken = $event['replyToken'];
-			// Build message to reply back
-			$messages = [
-				'type' => 'text',
-				'text' => 'userId: ' . $profile . '
-				imageId: ' . $text
-			];
 			// Make a POST Request to Messaging API to reply to sender
 			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/test.php';
 			$data = [
-				'replyToken' => $replyToken,
-				'messages' => [$messages],
+				'displayName' => $profile,
+				'messageId' => $text,
 			];
 			$post = json_encode($data);
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 			$result = curl_exec($ch);
 			curl_close($ch);
