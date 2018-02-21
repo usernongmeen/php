@@ -23,7 +23,7 @@ if (!is_null($events['events'])) {
 				imageId: ' . $text
 			];
 			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://api.line.me/v2/bot/message/reply';
+			$url = 'https://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/test.php';
 			$data = [
 				'replyToken' => $replyToken,
 				'messages' => [$messages],
@@ -38,13 +38,6 @@ if (!is_null($events['events'])) {
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			$result = curl_exec($ch);
 			curl_close($ch);
-
-			$data = json_decode(file_get_contents('https://api.line.me/v2/bot/profile/' . $profile), true);
-			header('Authorization: Bearer ' . $access_token);
-
-			echo $data;
-
-			echo $result . "\r\n";
 		}
 	}
 }
