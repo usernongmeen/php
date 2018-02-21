@@ -14,11 +14,19 @@ if (!is_null($events['events'])) {
 			$profile = $event['source']['userId'];
 			// Get text sent
 			$text = $event['message']['id'];
+			// Get replyToken
+			$replyToken = $event['replyToken'];
+			// Build message to reply back
+			$messages = [
+				'type' => 'text',
+				'text' => 'userId: ' . $profile . '
+				imageId: ' . $text
+			];
 			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://m3en.myds.me/om/line/line php bot - file upload/get_content.php';
+			$url = 'https://api.line.me/v2/bot/message/reply';
 			$data = [
-				'displayName' => $profile,
-				'messageId' => $text
+				'replyToken' => $replyToken,
+				'messages' => [$messages],
 			];
 			$post = json_encode($data);
 			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
@@ -31,7 +39,13 @@ if (!is_null($events['events'])) {
 			$result = curl_exec($ch);
 			curl_close($ch);
 
-			echo $result;
+			$data = json_decode(file_get_contents('https://api.line.me/v2/bot/profile/' . $profile), true);
+			header('Authorization: Bearer ' . $access_token);
+
+			echo $data;
+
+			echo $result . "\r\n";
 		}
 	}
 }
+echo "OK";
