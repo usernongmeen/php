@@ -18,7 +18,7 @@ if (!is_null($events['events'])) {
 			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
 			$post = [
 			    'displayName' => $profile,
-			    'messageId' => $text,
+			    'messageId' => $text
 			];
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
