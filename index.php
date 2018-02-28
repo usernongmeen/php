@@ -42,19 +42,21 @@ if (!is_null($events['events'])) {
 			$headersReply = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 			
 			$chUpload = curl_init($urlUpload);
-			$chReply = curl_init($urlReply);
 			curl_setopt($chUpload, CURLOPT_CUSTOMREQUEST, "POST");
 			curl_setopt($chUpload, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($chUpload, CURLOPT_POSTFIELDS, $postUpload);
 			curl_setopt($chUpload, CURLOPT_HTTPHEADER, $headersUpload);
+			$resultUpload = curl_exec($chUpload);
+			curl_close($chUpload);
+			
+			$chReply = curl_init($urlReply);
 			curl_setopt($chReply, CURLOPT_CUSTOMREQUEST, "POST");
 			curl_setopt($chReply, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($chReply, CURLOPT_POSTFIELDS, $postReply);
 			curl_setopt($chReply, CURLOPT_HTTPHEADER, $headersReply);
-			$resultUpload = curl_exec($chUpload);
 			$resultReply = curl_exec($chReply);
-			curl_close($chUpload);
 			curl_close($chReply);
+			
 			echo $resultUpload;
 			echo $resultReply;
 		}
