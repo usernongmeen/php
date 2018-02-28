@@ -1,5 +1,5 @@
 <?php
-$access_token = 'Lrocod53H3w9ysM+qaTSVWYWP/13z2JM2YOim7PqsRj6hkI7/KrMBmp44oEgM58N8OeFfoy2gESIw4eNCJGuUCEKUqi8oViv/b3sFTnKl0yN1Bd2LKnFyv0Tyk52+ZBxm6hnoTFUuom/5PFXPJr3HgdB04t89/1O/w1cDnyilFU=';
+$access_token = 'Cc62NCw9whOAnXC84ptuVBVHJpE25iKSAVK+96+eHvlmYd9SMvfnLSDImAsAFN47XLqq2YkAvuEPAdNGjmH/vNgPUu3Ej5rMRdr7js6VACSzvj7GWFNIBaFkxTQg8vaqGZ/tFP48mGy1KueQEd4qpgdB04t89/1O/w1cDnyilFU=';
 // Get POST body content
 $content = file_get_contents('php://input');
 // Parse JSON
@@ -18,36 +18,47 @@ if (!is_null($events['events'])) {
 			$text = $event['message']['id'];
 			// Get replyToken
 			$replyToken = $event['replyToken'];
-			// Build message to reply back
+			// Make a POST Request to Messaging API to reply to sender
+			$urlUpload = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
+			$urlReply = 'https://api.line.me/v2/bot/message/reply';
+			$dataUpload = [
+				'roomId' => $room,
+				'messageId' => $text,
+			];
 			$messages = [
 				'type' => 'text',
-				'text' => 'roomId' . $room . '
+				'text' => 'roomId: ' . $room . '
 				userId: ' . $profile . '
-				ImageId: ' . $text
+				messageId: ' . $text,
 			];
-			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://api.line.me/v2/bot/message/reply';
-			$data = [
+			$dataReply = [
 				'replyToken' => $replyToken,
 				'messages' => [$messages],
 			];
-			$post = json_encode($data);
-			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			$result = curl_exec($ch);
-			curl_close($ch);
-
-			$data = json_decode(file_get_contents('https://api.line.me/v2/bot/profile/' . $profile), true);
-			header('Authorization: Bearer ' . $access_token);
-
-			echo $data;
-
-			echo $result . "\r\n";
+			$postUpload = json_encode($dataUpload);
+			$postReply = json_encode($dataReply);
+			
+			$headersUpload = array('Content-Type: application/json');
+			$headersReply = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
+			
+			$chUpload = curl_init($urlUpload);
+			curl_setopt($chUpload, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($chUpload, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($chUpload, CURLOPT_POSTFIELDS, $postUpload);
+			curl_setopt($chUpload, CURLOPT_HTTPHEADER, $headersUpload);
+			$resultUpload = curl_exec($chUpload);
+			curl_close($chUpload);
+			
+			$chReply = curl_init($urlReply);
+			curl_setopt($chReply, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($chReply, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($chReply, CURLOPT_POSTFIELDS, $postReply);
+			curl_setopt($chReply, CURLOPT_HTTPHEADER, $headersReply);
+			$resultReply = curl_exec($chReply);
+			curl_close($chReply);
+			
+			echo $resultUpload;
+			echo $resultReply;
 		}
 	}
 }
