@@ -16,13 +16,17 @@ if (!is_null($events['events'])) {
 			$text = $event['message']['id'];
 			// Make a POST Request to Messaging API to reply to sender
 			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
-			$post = [
+			$data = [
 			    'roomId' => $room,
 			    'messageId' => $text,
 			];
-			$ch = curl_init($url);
+			$post = json_encode($data);
+			$headers = array('Content-Type: application/json');
+			$ch = curl_init($url);			
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			$result = curl_exec($ch);
 			curl_close($ch);
 		}
