@@ -29,6 +29,7 @@ if (!is_null($events['events'])) {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			$result = curl_exec($ch);
 			curl_close($ch);
+			echo $result;
 		}
 	}
 }
