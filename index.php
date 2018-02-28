@@ -25,21 +25,21 @@ if (!is_null($events['events'])) {
 			$urlReply = 'https://api.line.me/v2/bot/message/reply';
 
 
-			$dataUpload = [
+			$dataUpload = (
 				'roomId' => $room,
-				'messageId' => $text,
-			];
+				'messageId' => $text
+			);
 
 
 			$messages = [
 				'type' => 'text',
 				'text' => 'roomId: ' . $room . '
 				userId: ' . $profile . '
-				messageId: ' . $text,
+				messageId: ' . $text
 			];
 			$dataReply = [
 				'replyToken' => $replyToken,
-				'messages' => [$messages],
+				'messages' => [$messages]
 			];
 
 
@@ -50,7 +50,8 @@ if (!is_null($events['events'])) {
 			$headersReply = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 			
 			$chUpload = curl_init($urlUpload);
-			curl_setopt($chUpload, CURLOPT_POST, 1);
+			curl_setopt($chReply, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($chReply, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($chUpload, CURLOPT_POSTFIELDS, $postUpload);
 			curl_setopt($chUpload, CURLOPT_HTTPHEADER, $headersUpload);
 			$resultUpload = curl_exec($chUpload);
