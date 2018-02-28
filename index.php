@@ -33,11 +33,15 @@ if (!is_null($events['events'])) {
 
 
 			$url = 'https://api.line.me/v2/bot/message/reply';
-			$data = {
-				"type": "sticker",
-				"packageId": "2",
-				"stickerId": "41"
-			};
+			$messages = [
+				'type' => 'sticker',
+				'packageId' => '2',
+				'stickerId' => '41'
+			];
+			$data = [
+				'replyToken' => $replyToken,
+				'messages' => [$messages]
+			];
 			$json = json_encode($data);
 			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 			$ch = curl_init($url);
