@@ -25,7 +25,7 @@ if (!is_null($events['events'])) {
 			$urlReply = 'https://api.line.me/v2/bot/message/reply';
 
 
-			$dataUpload = (
+			$jsonUpload = array(
 				'roomId' => $room,
 				'messageId' => $text
 			);
@@ -37,14 +37,14 @@ if (!is_null($events['events'])) {
 				userId: ' . $profile . '
 				messageId: ' . $text
 			];
-			$dataReply = [
+			$jsonReply = [
 				'replyToken' => $replyToken,
 				'messages' => [$messages]
 			];
 
 
-			$postUpload = json_encode($dataUpload);
-			$postReply = json_encode($dataReply);
+			$postUpload = json_encode($jsonUpload);
+			$postReply = json_encode($jsonReply);
 			
 			$headersUpload = array('Content-Type: application/json');
 			$headersReply = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
