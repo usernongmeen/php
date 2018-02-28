@@ -12,51 +12,61 @@ if (!is_null($events['events'])) {
 		if ($event['type'] == 'message' && $event['message']['type'] == 'image') {
 
 
-			// Upload
-			// -----
 			// Get chat room
 			$room = $event['source']['roomId'];
 			// Get user profile
 			$profile = $event['source']['userId'];
 			// Get text sent
 			$text = $event['message']['id'];
-			// Make a POST Request to Upload to Server
-			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
-
-			$data = array(
-    			'roomId' => $room,
-    			'messageId' => $text
-    		);
-    		$json = json_encode($data);
-    		$client = new Zend_Http_Client($url);
-    		$client->setRawData($json, 'application/json')->request('POST');
-
-
-			// Reply
-			// -----
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://api.line.me/v2/bot/message/reply';
+			$urlUpload = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
+			$urlReply = 'https://api.line.me/v2/bot/message/reply';
+
+
+			$jsonUpload = array(
+				'roomId' => $room,
+				'messageId' => $text
+			);
+
+
 			$messages = [
 				'type' => 'text',
 				'text' => 'roomId: ' . $room . '
 				userId: ' . $profile . '
 				messageId: ' . $text
 			];
-			$data = [
+			$jsonReply = [
 				'replyToken' => $replyToken,
 				'messages' => [$messages]
 			];
-			$post = json_encode($data);
+
+
+			$postUpload = json_encode($jsonUpload);
+			$postReply = json_encode($jsonReply);
+			
+			$headersUpload = array('Content-Type: application/json');
 			$headersReply = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
-			$ch = curl_init($urlReply);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			$result = curl_exec($ch);
-			curl_close($ch);
+			
+			$chUpload = curl_init($urlUpload);
+			curl_setopt($chUpload, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($chUpload, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($chUpload, CURLOPT_POSTFIELDS, $postUpload);
+			curl_setopt($chUpload, CURLOPT_HTTPHEADER, $headersUpload);
+			$resultUpload = curl_exec($chUpload);
+			curl_close($chUpload);
+			
+			$chReply = curl_init($urlReply);
+			curl_setopt($chReply, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($chReply, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($chReply, CURLOPT_POSTFIELDS, $postReply);
+			curl_setopt($chReply, CURLOPT_HTTPHEADER, $headersReply);
+			$resultReply = curl_exec($chReply);
+			curl_close($chReply);
+			
+			echo $resultUpload;
+			echo $resultReply;
 		}
 	}
 }
