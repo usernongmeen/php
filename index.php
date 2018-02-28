@@ -10,6 +10,8 @@ if (!is_null($events['events'])) {
 	foreach ($events['events'] as $event) {
 		// Reply only when message sent is in 'text' format
 		if ($event['type'] == 'message' && $event['message']['type'] == 'image') {
+
+
 			// Get chat room
 			$room = $event['source']['roomId'];
 			// Get user profile
@@ -21,10 +23,14 @@ if (!is_null($events['events'])) {
 			// Make a POST Request to Messaging API to reply to sender
 			$urlUpload = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
 			$urlReply = 'https://api.line.me/v2/bot/message/reply';
+
+
 			$dataUpload = [
 				'roomId' => $room,
 				'messageId' => $text,
 			];
+
+
 			$messages = [
 				'type' => 'text',
 				'text' => 'roomId: ' . $room . '
@@ -35,6 +41,8 @@ if (!is_null($events['events'])) {
 				'replyToken' => $replyToken,
 				'messages' => [$messages],
 			];
+
+
 			$postUpload = json_encode($dataUpload);
 			$postReply = json_encode($dataReply);
 			
@@ -42,8 +50,7 @@ if (!is_null($events['events'])) {
 			$headersReply = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 			
 			$chUpload = curl_init($urlUpload);
-			curl_setopt($chUpload, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($chUpload, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($chUpload, CURLOPT_POST, 1);
 			curl_setopt($chUpload, CURLOPT_POSTFIELDS, $postUpload);
 			curl_setopt($chUpload, CURLOPT_HTTPHEADER, $headersUpload);
 			$resultUpload = curl_exec($chUpload);
