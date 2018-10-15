@@ -34,10 +34,9 @@ if (!is_null($events['events'])) {
 
 			$url = 'https://api.line.me/v2/bot/message/reply';
 			$messages = [
-				'type' => 'text',
-				'text' => 'roomId: ' . $roomId . '
-				userId: ' . $userId . '
-				messageId: ' . $messageId
+				'type' => 'sticker',
+				'packageId' => '2',
+				'stickerId' => '41'
 			];
 			$data = [
 				'replyToken' => $replyToken,
@@ -76,10 +75,9 @@ if (!is_null($events['events'])) {
 
 			$url = 'https://api.line.me/v2/bot/message/reply';
 			$messages = [
-				'type' => 'text',
-				'text' => 'roomId: ' . $roomId . '
-				userId: ' . $userId . '
-				messageId: ' . $messageId
+				'type' => 'sticker',
+				'packageId' => '2',
+				'stickerId' => '41'
 			];
 			$data = [
 				'replyToken' => $replyToken,
