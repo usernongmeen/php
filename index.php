@@ -51,7 +51,8 @@ if (!is_null($events['events'])) {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			$result = curl_exec($ch);
 			curl_close($ch);
-		} elseif ($event['type'] == 'message' && $event['message']['type'] == 'video') {
+		}
+		if ($event['type'] == 'message' && $event['message']['type'] == 'video') {
 
 			$roomId = $event['source']['roomId'];
 			$userId = $event['source']['userId'];
