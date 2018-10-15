@@ -18,7 +18,7 @@ if (!is_null($events['events'])) {
 			$replyToken = $event['replyToken'];
 
 
-			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content.php';
+			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content_image.php';
 			$data = array('roomId' => $roomId, 'messageId' => $messageId);
 			$options = array(
 			  'http' => array(
@@ -34,9 +34,10 @@ if (!is_null($events['events'])) {
 
 			$url = 'https://api.line.me/v2/bot/message/reply';
 			$messages = [
-				'type' => 'sticker',
-				'packageId' => '2',
-				'stickerId' => '41'
+				'type' => 'text',
+				'text' => 'roomId: ' . $roomId . '
+				userId: ' . $userId . '
+				messageId: ' . $messageId
 			];
 			$data = [
 				'replyToken' => $replyToken,
@@ -51,6 +52,49 @@ if (!is_null($events['events'])) {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			$result = curl_exec($ch);
 			curl_close($ch);
+		} elseif ($event['type'] == 'message' && $event['message']['type'] == 'video') {
+
+			$roomId = $event['source']['roomId'];
+			$userId = $event['source']['userId'];
+			$messageId = $event['message']['id'];
+			$replyToken = $event['replyToken'];
+
+
+			$url = 'http://m3en.myds.me/om/line/line%20php%20bot%20-%20file%20upload/get_content_video.php';
+			$data = array('roomId' => $roomId, 'messageId' => $messageId);
+			$options = array(
+			  'http' => array(
+			    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+			    'method'  => 'POST',
+			    'content' => http_build_query($data),
+			  ),
+			);
+			$context  = stream_context_create($options);
+			$result = file_get_contents($url, false, $context);
+			var_dump($result);
+
+
+			$url = 'https://api.line.me/v2/bot/message/reply';
+			$messages = [
+				'type' => 'text',
+				'text' => 'roomId: ' . $roomId . '
+				userId: ' . $userId . '
+				messageId: ' . $messageId
+			];
+			$data = [
+				'replyToken' => $replyToken,
+				'messages' => [$messages]
+			];
+			$json = json_encode($data);
+			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			$result = curl_exec($ch);
+			curl_close($ch);
+
 		}
 	}
 }
