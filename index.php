@@ -10,8 +10,8 @@ if (!is_null($events['events'])) {
 	foreach ($events['events'] as $event) {
 		// Reply only when message sent is in 'text' format
 		if ($event['type'] == 'message' && $event['message']['type'] == 'image') {
-
-
+			
+			
 			$roomId = $event['source']['roomId'];
 			$userId = $event['source']['userId'];
 			$messageId = $event['message']['id'];
@@ -51,9 +51,10 @@ if (!is_null($events['events'])) {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			$result = curl_exec($ch);
 			curl_close($ch);
-		}
-		if ($event['type'] == 'message' && $event['message']['type'] == 'video') {
-
+			
+		} elseif ($event['type'] == 'message' && $event['message']['type'] == 'video') {
+			
+			
 			$roomId = $event['source']['roomId'];
 			$userId = $event['source']['userId'];
 			$messageId = $event['message']['id'];
@@ -93,7 +94,7 @@ if (!is_null($events['events'])) {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			$result = curl_exec($ch);
 			curl_close($ch);
-
+			
 		}
 	}
 }
